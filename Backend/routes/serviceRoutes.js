@@ -12,7 +12,7 @@ import { upload } from "../middleware/uploadMiddleware.js";
 const router = express.Router();
 
 // Add new service (admin only)
-router.post("/create", verifyMiddleware, upload.single("image"), createService);
+router.post("/add", verifyMiddleware, upload.single("image"), createService);
 
 // Get all services (public)
 router.get("/", getAllServices);

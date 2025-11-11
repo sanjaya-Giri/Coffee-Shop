@@ -19,7 +19,10 @@ app.use(cookieParser());
 
 // Middleware
 app.use(express.json()); // to parse JSON request body
-app.use(cors()); // allow frontend connection
+app.use(cors({
+  origin: "http://localhost:5173",  // frontend origin
+  credentials: true,                // allow cookies or tokens
+}));// allow frontend connection
 
 // Routes
 app.use("/api/admin", adminRoutes);      // Admin login/signup routes
