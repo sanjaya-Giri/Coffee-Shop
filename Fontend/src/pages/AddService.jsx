@@ -23,6 +23,14 @@ const AddService = () => {
   // Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
+const token = localStorage.getItem("adminToken");
+
+if (!token) {
+  setMessage("You are not logged in!");
+  return;
+}
+
+
 
     const formData = new FormData();
     formData.append("name", service.name);
@@ -31,15 +39,27 @@ const AddService = () => {
     formData.append("image", image);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/services/add", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      setMessage(res.data.message || "Service added successfully!");
-      setService({ name: "", description: "", price: "" });
-      setImage(null);
-    } catch (err) {
-      setMessage(err.response?.data?.message || "Error adding service.");
+  const res = await axios.post(
+    "http://localhost:5000/api/services/add",
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,  // 🔥 REQUIRED
+      },
+      withCredentials: true,
     }
+  );
+
+  setMessage(res.data.message || "Service added successfully!");
+  setService({ name: "", description: "", price: "" });
+  setImage(null);
+
+} catch (err) {
+  console.log(err);  // 🔥 Print full error
+  setMessage(err.response?.data?.message || "Error adding service.");
+}
+
   };
 
   return (

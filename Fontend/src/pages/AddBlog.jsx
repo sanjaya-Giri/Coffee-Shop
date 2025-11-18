@@ -27,11 +27,13 @@ const AddBlog = () => {
         return;
       }
 
-      const res = await axios.post("http://localhost:5000/api/blogs", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await axios.post("http://localhost:5000/api/blogs/create", formData, {
+      headers: {
+       
+        Authorization: `Bearer ${token}`,  // 🔥 REQUIRED
+      },
+      withCredentials: true,
+    });
 
       if (res.status === 201) {
         setMessage("✅ Blog added successfully!");

@@ -12,10 +12,15 @@ const Navbar = () => {
 
   return (
     <nav className="bg-brown-700 text-white shadow-md p-4 flex justify-between items-center">
-      {/* Logo */}
-      <Link to="/" className="text-2xl font-bold">
+      {/* Logo - Redirect Based on User/Admin */}
+      <div
+        onClick={() =>
+          isAdmin ? navigate("/dashboard") : navigate("/")
+        }
+        className="text-2xl font-bold cursor-pointer"
+      >
         ☕ Coffee Shop
-      </Link>
+      </div>
 
       {/* Nav Links */}
       <div className="flex gap-4">

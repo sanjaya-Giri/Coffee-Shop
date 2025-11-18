@@ -1,48 +1,39 @@
 import express from "express";
-import dotenv from "dotenv";
 import cors from "cors";
+import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
 import connectDB from "./config/db.js";
+
 import adminRoutes from "./routes/adminRoutes.js";
 import blogRoutes from "./routes/blogRoutes.js";
 import serviceRoutes from "./routes/serviceRoutes.js";
-import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
-import cookieParser from "cookie-parser";
 
+import { errorHandler } from "./middleware/errorMiddleware.js";
 
 dotenv.config();
-
-// Connect to MongoDB
 connectDB();
 
 const app = express();
+
+// Middlewares
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
-// Middleware
-app.use(express.json()); // to parse JSON request body
 app.use(cors({
-  origin: "http://localhost:5173",  // frontend origin
-  credentials: true,                // allow cookies or tokens
-}));// allow frontend connection
+  origin: "http://localhost:5173",
+  credentials: true
+}));
 
-// Routes
-app.use("/api/admin", adminRoutes);      // Admin login/signup routes
-app.use("/api/blogs", blogRoutes);       // Blog routes (public + admin protected)
-app.use("/api/services", serviceRoutes); // Services routes (public + admin protected)
+// Serve uploaded images
+app.use("/uploads", express.static("uploads"));
 
+// ROUTES
+app.use("/api/admin", adminRoutes);
+app.use("/api/blogs", blogRoutes);
+app.use("/api/services", serviceRoutes);
 
-app.use(notFound);
-app.use(errorHandler);
-// Default Route
-app.get("/", (req, res) => {
-  res.send("Welcome to the Coffee Shop API ☕");
-});
-
-// Error Handling Middleware
-app.use(notFound);
+// Error handler
 app.use(errorHandler);
 
-// Server Listen
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`✅ Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

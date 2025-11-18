@@ -4,26 +4,22 @@ import {
   getAllServices,
   getSingleService,
   deleteService,
-  updateService,
 } from "../controllers/serviceController.js";
 import { verifyMiddleware } from "../middleware/verifyMiddleware.js";
-import { upload } from "../middleware/uploadMiddleware.js";
+import { upload } from "../middleware/uploadMiddleware.js"; // ✅ correct import
 
 const router = express.Router();
 
-// Add new service (admin only)
+// ADD SERVICE (protected)
 router.post("/add", verifyMiddleware, upload.single("image"), createService);
 
-// Get all services (public)
+// GET all services
 router.get("/", getAllServices);
 
-// Get single service (public)
+// GET single service
 router.get("/:id", getSingleService);
 
-// Update service (admin only)
-router.put("/:id", verifyMiddleware, upload.single("image"), updateService);
-
-// Delete service (admin only)
+// DELETE service (protected)
 router.delete("/:id", verifyMiddleware, deleteService);
 
 export default router;
