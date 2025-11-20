@@ -1,27 +1,20 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { FaCoffee, FaHeart } from 'react-icons/fa';
 
 const Footer = () => {
   return (
-    <footer className="bg-brown-800 text-white py-6 mt-10">
-      <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
-        {/* Logo / Brand */}
-        <h2 className="text-xl font-semibold mb-3 md:mb-0">
-          ☕ Coffee Shop
-        </h2>
-
-        {/* Links */}
-        <div className="flex gap-4 mb-3 md:mb-0">
-          <Link to="/" className="hover:text-yellow-300">Home</Link>
-          <Link to="/services" className="hover:text-yellow-300">Services</Link>
-          <Link to="/blogs" className="hover:text-yellow-300">Blogs</Link>
-          <Link to="/contact" className="hover:text-yellow-300">Contact</Link>
+    <footer className="bg-gray-800 text-white py-8">
+      <div className="container mx-auto px-4 text-center">
+        <div className="flex items-center justify-center space-x-2 mb-4">
+          <FaCoffee className="text-amber-400" />
+          <span className="text-lg font-semibold">Coffee Shop</span>
         </div>
-
-        {/* Copyright */}
-        <p className="text-sm text-gray-300">
-          © {new Date().getFullYear()} Coffee Shop. All Rights Reserved.
+        <p className="flex items-center justify-center space-x-1 text-gray-300">
+          <span>Made with</span>
+          <FaHeart className="text-red-500" />
+          <span>for coffee lovers</span>
         </p>
+        <p className="text-gray-400 mt-2">© 2024 Coffee Shop. All rights reserved.</p>
       </div>
     </footer>
   );

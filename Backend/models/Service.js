@@ -1,33 +1,45 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-const serviceSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    description: {
-      type: String,
-      required: true,
-    },
-    price: {
-      type: Number,
-      required: true,
-    },
-    image: {
-      type: String, // will store the image URL or local path
-      required: true,
-    },
-    category: {
-      type: String,
-      default: "Coffee",
-    },
+const serviceSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    trim: true,
+    maxlength: 100
   },
-  {
-    timestamps: true,
+  description: {
+    type: String,
+    required: true,
+    trim: true,
+    maxlength: 500
+  },
+  price: {
+    type: Number,
+    required: true,
+    min: 0
+  },
+  image: {
+    type: String,
+    required: true
+  },
+  category: {
+    type: String,
+    enum: ['coffee', 'tea', 'beverage', 'food', 'other'],
+    default: 'coffee'
+  },
+  isAvailable: {
+    type: Boolean,
+    default: true
+  },
+  featured: {
+    type: Boolean,
+    default: false
   }
-);
+}, {
+  timestamps: true
+});
 
-const Service = mongoose.model("Service", serviceSchema);
-export default Service;
+// Index for better query performance
+serviceSchema.index({ category: 1, createdAt: -1 });
+
+export default mongoose.model('Service', serviceSchema);

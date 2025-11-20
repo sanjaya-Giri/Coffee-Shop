@@ -1,25 +1,23 @@
-import express from "express";
-import {
-  createService,
-  getAllServices,
-  getSingleService,
-  deleteService,
-} from "../controllers/serviceController.js";
-import { verifyMiddleware } from "../middleware/verifyMiddleware.js";
-import { upload } from "../middleware/uploadMiddleware.js"; // ✅ correct import
+import express from 'express';
+import { 
+  createService, 
+  getServices, 
+  
+  updateService, 
+  deleteService 
+} from '../controllers/serviceController.js';
+import { protect } from '../middleware/authMiddleware.js';
+import { upload } from '../middleware/uploadMiddleware.js';
 
 const router = express.Router();
 
-// ADD SERVICE (protected)
-router.post("/add", verifyMiddleware, upload.single("image"), createService);
+// Public routes
+router.get('/', getServices);
+router.get('/:id', getServices);
 
-// GET all services
-router.get("/", getAllServices);
-
-// GET single service
-router.get("/:id", getSingleService);
-
-// DELETE service (protected)
-router.delete("/:id", verifyMiddleware, deleteService);
+// Protected admin routes
+router.post('/', protect, upload.single('image'), createService);
+router.put('/:id', protect, upload.single('image'), updateService);
+router.delete('/:id', protect, deleteService);
 
 export default router;

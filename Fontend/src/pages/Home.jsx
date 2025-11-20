@@ -1,134 +1,69 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { FaCoffee, FaArrowRight } from 'react-icons/fa';
 
 const Home = () => {
-  const [services, setServices] = useState([]);
-  const [blogs, setBlogs] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [serviceRes, blogRes] = await Promise.all([
-          axios.get("http://localhost:5000/api/services"),
-          axios.get("http://localhost:5000/api/blogs"),
-        ]);
-        setServices(serviceRes.data || []);
-        setBlogs(blogRes.data || []);
-      } catch (err) {
-        console.error("Error loading data:", err);
-      }
-    };
-    fetchData();
-  }, []);
-
   return (
-    <div className="home">
+    <div className="bg-gradient-to-br from-amber-50 to-orange-100">
       {/* Hero Section */}
-      <section className="bg-[url('https://images.unsplash.com/photo-1509042239860-f550ce710b93')] bg-cover bg-center text-white py-32 text-center">
-        <div className="bg-black/50 p-10">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">
-            Welcome to CoffeeCraft ☕
+      <section className="py-20 px-4">
+        <div className="container mx-auto text-center">
+          <div className="flex justify-center mb-6">
+            <FaCoffee className="text-6xl text-amber-600" />
+          </div>
+          <h1 className="text-5xl font-bold text-gray-800 mb-6">
+            Welcome to Coffee Shop
           </h1>
-          <p className="text-lg md:text-xl mb-6">
-            “Brewed with passion, served with love.”
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            Discover the finest coffee blends and learn about the art of coffee brewing through our stories and services.
           </p>
-          <Link
-            to="/services"
-            className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-md text-lg font-semibold transition"
-          >
-            Explore Our Menu
-          </Link>
+          <div className="flex justify-center space-x-4">
+            <Link 
+              to="/services" 
+              className="bg-amber-600 hover:bg-amber-700 text-white px-8 py-3 rounded-lg font-semibold flex items-center space-x-2 transition"
+            >
+              <span>View Services</span>
+              <FaArrowRight />
+            </Link>
+            <Link 
+              to="/blogs" 
+              className="border-2 border-amber-600 text-amber-600 hover:bg-amber-600 hover:text-white px-8 py-3 rounded-lg font-semibold transition"
+            >
+              Read Blogs
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* About Section */}
-      <section className="py-16 px-6 md:px-20 text-center bg-gray-50">
-        <h2 className="text-3xl font-bold mb-4">About Us</h2>
-        <p className="max-w-3xl mx-auto text-gray-700 leading-relaxed">
-          At <strong>CoffeeCraft</strong>, we serve freshly brewed coffee, made
-          from premium beans sourced from around the world. Whether you’re
-          looking for a perfect espresso, creamy cappuccino, or an adventurous
-          cold brew — we’ve got your coffee cravings covered.
-        </p>
-      </section>
-
-      {/* Services Preview */}
-      <section className="py-16 px-6 md:px-20">
-        <h2 className="text-3xl font-bold text-center mb-8">
-          Our Popular Services
-        </h2>
-        {services.length === 0 ? (
-          <p className="text-center text-gray-500">No services available yet.</p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {services.slice(0, 3).map((service) => (
-              <div
-                key={service._id}
-                className="border rounded-lg shadow p-4 hover:shadow-xl transition"
-              >
-                {service.image && (
-                  <img
-                    src={`http://localhost:5000/uploads/${service.image}`}
-                    alt={service.name}
-                    className="w-full h-40 object-cover rounded-md mb-3"
-                  />
-                )}
-                <h3 className="text-lg font-bold mb-1">{service.name}</h3>
-                <p className="text-sm text-gray-700">{service.description}</p>
-                <p className="text-blue-600 font-semibold mt-2">
-                  ₹{service.price}
-                </p>
+      {/* Features Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
+            What We Offer
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center p-6">
+              <div className="bg-amber-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FaCoffee className="text-2xl text-amber-600" />
               </div>
-            ))}
-          </div>
-        )}
-        <div className="text-center mt-8">
-          <Link
-            to="/services"
-            className="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700 transition"
-          >
-            View All Services
-          </Link>
-        </div>
-      </section>
-
-      {/* Blog Preview */}
-      <section className="py-16 px-6 md:px-20 bg-gray-50">
-        <h2 className="text-3xl font-bold text-center mb-8">
-          From Our Coffee Blog
-        </h2>
-        {blogs.length === 0 ? (
-          <p className="text-center text-gray-500">No blog posts yet.</p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {blogs.slice(0, 3).map((blog) => (
-              <div
-                key={blog._id}
-                className="border rounded-lg shadow p-4 hover:shadow-xl transition"
-              >
-                {blog.image && (
-                  <img
-                    src={`http://localhost:5000/uploads/${blog.image}`}
-                    alt={blog.title}
-                    className="w-full h-40 object-cover rounded-md mb-3"
-                  />
-                )}
-                <h3 className="text-lg font-bold mb-1">{blog.title}</h3>
-                <p className="text-sm text-gray-700">
-                  {blog.content.slice(0, 100)}...
-                </p>
+              <h3 className="text-xl font-semibold mb-2">Premium Coffee</h3>
+              <p className="text-gray-600">Handcrafted coffee blends from around the world</p>
+            </div>
+            <div className="text-center p-6">
+              <div className="bg-amber-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FaCoffee className="text-2xl text-amber-600" />
               </div>
-            ))}
+              <h3 className="text-xl font-semibold mb-2">Expert Service</h3>
+              <p className="text-gray-600">Professional baristas and quality service</p>
+            </div>
+            <div className="text-center p-6">
+              <div className="bg-amber-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FaCoffee className="text-2xl text-amber-600" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Coffee Stories</h3>
+              <p className="text-gray-600">Learn about coffee culture and brewing techniques</p>
+            </div>
           </div>
-        )}
-        <div className="text-center mt-8">
-          <Link
-            to="/blog"
-            className="bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700 transition"
-          >
-            Read More Blogs
-          </Link>
         </div>
       </section>
     </div>
